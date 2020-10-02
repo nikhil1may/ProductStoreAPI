@@ -20,5 +20,6 @@ namespace ProductStoreAPI.Utility
         int DeleteCategoryDetails(int Id);
         int AddUpdateCategoryDetails(IDictionary<string, object> data);
         List<sp_SearchProductNew_Result> getProductsBySearch(IDictionary<string, object> data);
+
     }
 }
