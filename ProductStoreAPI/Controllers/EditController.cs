@@ -1,5 +1,6 @@
 ﻿using ProductStoreAPI.App_Start;
-using ProductStoreAPI.Utility;
+using ProductStoreAPI.Interface;
+using ProductStoreAPI.ProductStoreService;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
@@ -57,5 +58,24 @@ namespace ProductStoreAPI.Controllers
             return Json(data);
         }
 
+        [HttpPost]
+        [Route("api/Edit/SearchCategory")]
+        public IHttpActionResult GetCategoryByName([FromBody]ExpandoObject searchCriteria)
+        {
+            var keyValuePairs = ((System.Collections.Generic.IDictionary<string, object>)searchCriteria);
+            var data = _databaseOperations.getCategoryByName(keyValuePairs);
+
+            return Json(data);
+        }
+
+        [HttpPost]
+        [Route("api/Edit/ManageLog")]
+        public IHttpActionResult InsertLog([FromBody]ExpandoObject Values)
+        {
+            var keyValuePairs = ((System.Collections.Generic.IDictionary<string, object>)Values);
+            var data = _databaseOperations.InsertLog(keyValuePairs);
+
+            return Json(data);
+        }
     }
 }

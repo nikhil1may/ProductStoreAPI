@@ -12,6 +12,7 @@
         <AssociationConnector Association="ProductStoreModel.FK_tbl_Product_tbl_Category" ManuallyRouted="false" />
         <AssociationConnector Association="ProductStoreModel.FK_tbl_Product_tbl_Currency" ManuallyRouted="false" />
         <AssociationConnector Association="ProductStoreModel.FK_tbl_Product_tbl_Unit" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="ProductStoreModel.tbl_Error" Width="1.5" PointX="5.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

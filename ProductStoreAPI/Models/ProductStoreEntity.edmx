@@ -22,6 +22,14 @@
           <Property Name="CurrencyName" Type="nvarchar" MaxLength="100" />
           <Property Name="DateAdded" Type="datetime" />
         </EntityType>
+        <EntityType Name="tbl_Error">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ErrorMessage" Type="nvarchar(max)" />
+          <Property Name="ErrorTime" Type="datetime" />
+        </EntityType>
         <EntityType Name="tbl_Product">
           <Key>
             <PropertyRef Name="Id" />
@@ -90,6 +98,7 @@
         <EntityContainer Name="ProductStoreModelStoreContainer">
           <EntitySet Name="tbl_Category" EntityType="Self.tbl_Category" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_Currency" EntityType="Self.tbl_Currency" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_Error" EntityType="Self.tbl_Error" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_Product" EntityType="Self.tbl_Product" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_Unit" EntityType="Self.tbl_Unit" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_tbl_Product_tbl_Category" Association="Self.FK_tbl_Product_tbl_Category">
@@ -214,6 +223,7 @@
             <Parameter Name="ProductName" Mode="In" Type="String" />
             <Parameter Name="Category" Mode="In" Type="Int32" />
           </FunctionImport>
+          <EntitySet Name="tbl_Error" EntityType="ProductStoreModel.tbl_Error" />
         </EntityContainer>
         <ComplexType Name="sp_SearchProduct_Result">
           <Property Type="Int32" Name="Id" Nullable="false" />
@@ -233,6 +243,14 @@
           <Property Type="Decimal" Name="Price" Nullable="true" Precision="18" Scale="0" />
           <Property Type="Int32" Name="Id" Nullable="false" />
         </ComplexType>
+        <EntityType Name="tbl_Error">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ErrorMessage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ErrorTime" Type="DateTime" Precision="3" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -307,6 +325,15 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="tbl_Error">
+            <EntityTypeMapping TypeName="ProductStoreModel.tbl_Error">
+              <MappingFragment StoreEntitySet="tbl_Error">
+                <ScalarProperty Name="ErrorTime" ColumnName="ErrorTime" />
+                <ScalarProperty Name="ErrorMessage" ColumnName="ErrorMessage" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

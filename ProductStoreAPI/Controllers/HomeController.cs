@@ -1,5 +1,6 @@
 ﻿using ProductStoreAPI.App_Start;
-using ProductStoreAPI.Utility;
+using ProductStoreAPI.Interface;
+using ProductStoreAPI.ProductStoreService;
 using System;
 using System.Collections.Generic;
 using System.Linq;

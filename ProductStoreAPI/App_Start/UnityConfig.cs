@@ -1,4 +1,5 @@
-using ProductStoreAPI.Utility;
+using ProductStoreAPI.Interface;
+using ProductStoreAPI.ProductStoreService;
 using System.Web.Http;
 using Unity;
 using Unity.WebApi;

@@ -31,6 +31,7 @@ namespace ProductStoreAPI.Models
         public virtual DbSet<tbl_Currency> tbl_Currency { get; set; }
         public virtual DbSet<tbl_Product> tbl_Product { get; set; }
         public virtual DbSet<tbl_Unit> tbl_Unit { get; set; }
+        public virtual DbSet<tbl_Error> tbl_Error { get; set; }
     
         public virtual ObjectResult<sp_SearchProduct_Result> sp_SearchProduct(string productName, Nullable<int> category)
         {

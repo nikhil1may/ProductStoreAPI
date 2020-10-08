@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProductStoreAPI.Utility
+namespace ProductStoreAPI.Interface
 {
     interface IDatabaseOperations
     {
@@ -20,6 +20,8 @@ namespace ProductStoreAPI.Utility
         int DeleteCategoryDetails(int Id);
         int AddUpdateCategoryDetails(IDictionary<string, object> data);
         List<sp_SearchProductNew_Result> getProductsBySearch(IDictionary<string, object> data);
-
+        List<ModelCategories> getCategoryByName(IDictionary<string, object> data);
+        int InsertLog(IDictionary<string, object> data);
+        void InsertLogMessage(string logMessage);
     }
 }

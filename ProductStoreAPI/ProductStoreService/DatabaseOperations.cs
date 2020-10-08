@@ -1,12 +1,14 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using ProductStoreAPI.Interface;
+using Newtonsoft.Json.Linq;
 using ProductStoreAPI.App_Start;
+using ProductStoreAPI.Interface;
 using ProductStoreAPI.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace ProductStoreAPI.Utility
+namespace ProductStoreAPI.ProductStoreService
 {
     [ExceptionFilter]
     public class DatabaseOperations : IDatabaseOperations
@@ -20,12 +22,12 @@ namespace ProductStoreAPI.Utility
                             join currency in db.tbl_Currency on product.CurrencyId equals currency.Id
                             select new ProductDetails
                             {
-                               productName= product.ProductName,
-                               categoryName= category.CategoryName,
-                               unitName= units.UnitName,
-                               currencyName= currency.CurrencyName,
-                               price=  product.Price,
-                               Id = product.Id
+                                productName = product.ProductName,
+                                categoryName = category.CategoryName,
+                                unitName = units.UnitName,
+                                currencyName = currency.CurrencyName,
+                                price = product.Price,
+                                Id = product.Id
                             }
                             ).ToList();
             return Products;
@@ -44,14 +46,14 @@ namespace ProductStoreAPI.Utility
 
         public List<ModelUnits> getAllUnits()
         {
-            
+
 
             var Units = (from unit in db.tbl_Unit
-                        select new ModelUnits
-                        {
-                            Id = unit.Id,
-                            UnitName = unit.UnitName
-                        }).ToList();
+                         select new ModelUnits
+                         {
+                             Id = unit.Id,
+                             UnitName = unit.UnitName
+                         }).ToList();
 
             return Units;
         }
@@ -125,7 +127,7 @@ namespace ProductStoreAPI.Utility
             var Category = db.tbl_Category.Where(a => a.Id == categoryId).FirstOrDefault();
             ModelCategories categoryDetails = new ModelCategories();
             categoryDetails.Id = Category.Id;
-            categoryDetails.CategoryName = Category.CategoryName.ToString();           
+            categoryDetails.CategoryName = Category.CategoryName.ToString();
             return categoryDetails;
         }
         public int DeleteCategoryDetails(int Id)
@@ -144,13 +146,13 @@ namespace ProductStoreAPI.Utility
             if (searchId != 0)
             {
                 var result = db.tbl_Category.Where(p => p.Id == searchId).SingleOrDefault();
-                result.CategoryName = data["CategoryName"].ToString();               
+                result.CategoryName = data["CategoryName"].ToString();
                 result.DateModified = DateTime.Now;
                 db.SaveChanges();
             }
             else
             {
-                tbl_Category tbl_Category  = new tbl_Category();
+                tbl_Category tbl_Category = new tbl_Category();
                 tbl_Category.CategoryName = data["CategoryName"].ToString();
                 tbl_Category.DateAdded = DateTime.Now;
                 db.tbl_Category.Add(tbl_Category);
@@ -163,11 +165,49 @@ namespace ProductStoreAPI.Utility
         {
             string CategoryId = data["CategoryId"].ToString();
             int categoryId = Convert.ToInt32(CategoryId);
-            string productname= data["ProductName"].ToString();
+            string productname = data["ProductName"].ToString();
 
             var result = db.sp_SearchProductNew(productname, categoryId).ToList();
 
             return result;
+        }
+
+        public List<ModelCategories> getCategoryByName(IDictionary<string, object> data)
+        {
+
+            string CategoryName = data["CategoryName"].ToString();
+            var Categories = (from
+                             category in db.tbl_Category
+                              where category.CategoryName==CategoryName
+                              select new ModelCategories
+                              {
+                                  CategoryName = category.CategoryName,
+                                  Id = category.Id
+                              }
+                                       ).ToList();
+            return Categories;
+
+
+
+        }
+
+        public int InsertLog(IDictionary<string, object> data)
+        {
+            tbl_Error tblError = new tbl_Error();
+            tblError.ErrorMessage = data["ErrorMessage"].ToString();
+            tblError.ErrorTime = DateTime.Now;
+            db.tbl_Error.Add(tblError);
+            db.SaveChanges();
+            return 1;
+        }
+
+        public void InsertLogMessage(string logMessage)
+        {
+            tbl_Error tblError = new tbl_Error();
+            tblError.ErrorMessage = logMessage;
+            tblError.ErrorTime = DateTime.Now;
+            db.tbl_Error.Add(tblError);
+            db.SaveChanges();            
         }
     }
 }
