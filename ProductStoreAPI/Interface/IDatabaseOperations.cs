@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ProductStoreAPI.Interface
 {
-    interface IDatabaseOperations
+    public interface IDatabaseOperations
     {
         List<ProductDetails> getAllProductDetails();
         List<ModelCategories> getAllCategories();

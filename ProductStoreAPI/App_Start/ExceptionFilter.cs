@@ -1,4 +1,5 @@
 ﻿using ProductStoreAPI.Interface;
+using ProductStoreAPI.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,22 +13,21 @@ namespace ProductStoreAPI.App_Start
 {
     public class ExceptionFilter : FilterAttribute, IExceptionFilter
     {
-        private static IDatabaseOperations _databaseOperations;
-        public ExceptionFilter()
-        {
-            GetDependentInstances();
-        }
-
-        public void GetDependentInstances()
-        {
-            var container = UnityConfig.Register();
-            _databaseOperations = container.Resolve<IDatabaseOperations>();
-        }
+       
+        private ProductStoreEntities db = new ProductStoreEntities();   
 
         public void OnException(ExceptionContext filterContext)
         {
           string route=  filterContext.RouteData.Route.ToString();
-            _databaseOperations.InsertLogMessage("Error In :" + route + "  Inner Exception " + filterContext.Exception.InnerException + "Message :"+ filterContext.Exception.Message + "Stack Trace : " + filterContext.Exception.StackTrace);
+            string logMessage= "Error In :" + route + "  Inner Exception " + filterContext.Exception.InnerException + "Message :"+ filterContext.Exception.Message + "Stack Trace : " + filterContext.Exception.StackTrace;
+           
+                tbl_Error tblError = new tbl_Error();
+                tblError.ErrorMessage = logMessage;
+                tblError.ErrorTime = DateTime.Now;
+                db.tbl_Error.Add(tblError);
+                db.SaveChanges();
+           
+
             filterContext.ExceptionHandled = true;
 
         }

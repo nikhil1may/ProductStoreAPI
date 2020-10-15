@@ -13,19 +13,16 @@ using Unity;
 namespace ProductStoreAPI.Controllers
 {
     [ExceptionFilter]
+   
     public class EditController : ApiController
     {
+        [Dependency]
         private static IDatabaseOperations _databaseOperations;
-        public EditController()
+        public EditController(IDatabaseOperations databaseOperations)
         {
-            GetDependentInstances();
+            _databaseOperations = databaseOperations;
         }
 
-        public void GetDependentInstances()
-        {
-            var container = UnityConfig.Register();
-            _databaseOperations = container.Resolve<IDatabaseOperations>();
-        }
         [HttpPost]
         [Route("api/Edit/UpdateProduct")]
         public IHttpActionResult UpdateProduct([FromBody]ExpandoObject jsonString)

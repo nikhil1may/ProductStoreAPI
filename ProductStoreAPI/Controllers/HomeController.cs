@@ -14,17 +14,14 @@ namespace ProductStoreAPI.Controllers
     [ExceptionFilter]
     public class HomeController : Controller
     {
-        private static IDatabaseOperations _databaseOperations;
-        public HomeController()
-        {
-            GetDependentInstances();
-        }
+        [Dependency]
+        public IDatabaseOperations _databaseOperations; 
 
-        public void GetDependentInstances()
+        public HomeController(IDatabaseOperations databaseOperations)
         {
-            var container = UnityConfig.Register();
-            _databaseOperations = container.Resolve<IDatabaseOperations>();
+            _databaseOperations = databaseOperations;
         }
+        
         public ActionResult Index()
         {
             ViewBag.Title = "Home Page";
